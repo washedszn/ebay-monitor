@@ -3,10 +3,13 @@ const webhook = require('../settings.json').webhook;
 
 const sendWebhook = async (data) => {
 
+    // I only wanted non auction listings and between £50 - £250 to be sent to discord
+    // You can change this to whatever you like 
     if (data.saleType == 'Auction' || 50 < data.price < 250) {
         console.log(`Blocked - ${data.url}`)
         return;
     }
+    
     let embed = {
         embeds: [
             {
