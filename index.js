@@ -4,7 +4,7 @@ const settings = require('./settings.json')
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs')
-let active = true;
+let active;
 let stock = [];
 
 const checkListings = async (keywords, index) => {
@@ -20,6 +20,7 @@ const checkListings = async (keywords, index) => {
 }
 
 const startMonitor = () => {
+    active = true;
     let monitor = setInterval(() => {
         if (!active) {
             return clearInterval(monitor);
@@ -59,14 +60,14 @@ client.on('message', (msg) => {
     let content = msg.content.replace(`${command} `, '');
 
     switch (command) {
-        case '!test':
-            console.log(stock[0][0])
         case '!start':
+            !active ? startMonitor() : null;
             client.user.setActivity('eBay Listings', { type: 'WATCHING'})
             break;
         case '!stop':
+            active = false;
             stock.length = 0;
-            client.user.setActivity('with peepee', { type: 'PLAYING'})
+            client.user.setActivity('with nothing :(', { type: 'PLAYING'})
             break;
         case '!add':
             msg.channel.send(edit('add', content) ? `Successfully added: ${content}` : 'Failed!')
