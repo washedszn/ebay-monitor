@@ -1,18 +1,31 @@
 const scrapeEbay = require('./src/scrape');
-const sendWebhook = require('./src/webhook');
+const sendEmbed = require('./src/webhook');
 const settings = require('./settings.json')
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs')
-const active = true;
+let active = true;
+let stock = [];
+
+const checkListings = async (keywords, index) => {
+    let update = await scrapeEbay(keywords);
+    if (!stock[index]) {
+        return stock[index] = update;
+    }
+    let newStock = update.filter(x => !stock[index].some(y => x.id === y.id));
+    for (let i = 0; i < newStock.length; i++) {
+        await sendEmbed(newStock[i]);
+    }
+    stock[index] = update;
+}
 
 const startMonitor = () => {
     let monitor = setInterval(() => {
         if (!active) {
             return clearInterval(monitor);
         }
-        settings.keyword.forEach(key => {
-            scrapeEbay(key.split(', '))
+        settings.keyword.forEach((key, index) => {
+            checkListings(key.split(', '), index)
         })
     }, 30000)
 }
@@ -26,6 +39,7 @@ const edit = (type, content) => {
             type == 'add' ? json.keyword.push(content) : null;
             type == 'remove' ? json.keyword.splice(content, 1) : null;
             fs.writeFileSync('settings.json', JSON.stringify(json, null, 4))
+            stock.length = 0;
         })
         return true;
     } catch (err) {
@@ -45,12 +59,13 @@ client.on('message', (msg) => {
     let content = msg.content.replace(`${command} `, '');
 
     switch (command) {
+        case '!test':
+            console.log(stock[0][0])
         case '!start':
-            //msg.channel.send(active ? 'Already Active!' : 'Monitor Live!');
             client.user.setActivity('eBay Listings', { type: 'WATCHING'})
             break;
         case '!stop':
-            //msg.channel.send(active ? 'Monitor Offline!' : 'Already Offline!');
+            stock.length = 0;
             client.user.setActivity('with peepee', { type: 'PLAYING'})
             break;
         case '!add':
@@ -69,4 +84,3 @@ client.on('message', (msg) => {
 })
 
 client.login(settings.token)
-

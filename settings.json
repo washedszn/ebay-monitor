@@ -1,4 +1,7 @@
 {
-    "keyword": [],
-    "webhook": ""
+    "keyword": [
+        "graphics, card"
+    ],
+    "webhook": "https://discordapp.com/api/webhooks/692344824606490634/KRhztSbrPA7Z1E_DejaK0ke4MdWR-RqCsA5JXh_5RxeGNW7AMLyCDr_XxNzZdppQUie9",
+    "token": "NzAzNTgwNzU3OTAxMzEyMDYx.XqQqwg.EhwChk6YqzAUGdXU8QyF0wuUsds"
 }
