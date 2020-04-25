@@ -1,0 +1,23 @@
+{
+  "name": "ebay-monitor",
+  "version": "1.0.0",
+  "description": "Monitor for eBay",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/washedszn/ebay-monitor.git"
+  },
+  "author": "Washed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/washedszn/ebay-monitor/issues"
+  },
+  "homepage": "https://github.com/washedszn/ebay-monitor#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "superagent": "^5.2.2"
+  }
+}
