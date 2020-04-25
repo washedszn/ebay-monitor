@@ -3,7 +3,7 @@ const webhook = require('../settings.json').webhook;
 
 const sendWebhook = async (data) => {
 
-    if (data.saleType == 'Auction') {
+    if (data.saleType == 'Auction' || 50 < data.price < 250) {
         console.log(`Blocked - ${data.url}`)
         return;
     }
@@ -24,7 +24,7 @@ const sendWebhook = async (data) => {
                 "fields": [
                     {
                         name: 'Price:',
-                        value: data.price,
+                        value: '£' + data.price,
                         inline: true
                     },
                     {

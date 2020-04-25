@@ -15,11 +15,11 @@ const scrapeEbay = async (keywords) => {
                 let url = $(el.find('.lvtitle > a')).attr('href');
                 let img = $(el.find('.img.load-img')).attr('imgurl');
                 let name = $(el.find('.lvtitle')).text().split('\n')[1].replace('\t\t', '');
-                let price = $(el.find('ul > li > .bold')).text().replace(/[^0-9.]/g, '');
+                let price = $(el.find('ul > li > .bold')).text().replace(/[^0-9£.]/g, '').split('£').pop();
                 let condition = $(el.find('.lvsubtitle')).text().replace(/[^a-zA-Z0-9 .]/g, '');
-                let type = $(el.find('.lvformat > span')).text();
-                let type2 = $(el.find('.lvformat > div')).text();
-                type = !type || type2 ? 'Buy it Now' : 'Auction'
+                let bin = $(el.find('.lvformat > span > span')).attr('title');
+                let offer = $(el.find('.lvformat > div')).text() ? 'Best Offer' : 'Auction'
+                let type = !bin ? offer : bin;
                 products[index] = {
                     id: id,
                     url: url,
@@ -27,9 +27,10 @@ const scrapeEbay = async (keywords) => {
                     name: name,
                     price: price,
                     condition: condition,
-                    saleType: type
+                    saleType: type,
                 }
             })
+
             if (res.status != 200) {
                 console.log(res.status)
             }
